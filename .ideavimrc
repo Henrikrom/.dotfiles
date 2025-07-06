@@ -1,0 +1,29 @@
+let mapleader = " "
+
+set relativenumber
+
+nnoremap <leader>o :action SearchEverywhere<CR>
+
+nnoremap <leader>, :action Back<CR>
+nnoremap <leader>. :action Forward<CR>
+
+nnoremap <leader>ca :action ShowIntentionActions<CR>
+
+nnoremap gi :action GotoImplementation<CR>
+nnoremap gr :action FindUsages<CR>
+
+nnoremap <C-d> <C-d>zz
+nnoremap <C-u> <C-u>zz
+
+nnoremap <leader>w :w<CR> 
+
+nnoremap <leader>e :action ActivateProjectToolWindow<CR>
+
+vnoremap <leader>f :action ReformatCode<CR>
+
+nmap <leader>g :action FindInPath<CR>
+
+vnoremap J :m '>+1<CR>gv=gv
+vnoremap K :m '<-2<CR>gv=gv
+
+" nnoremap <leader>z :action HideAllToolWindows<CR>

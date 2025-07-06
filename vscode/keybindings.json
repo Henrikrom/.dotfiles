@@ -1,0 +1,87 @@
+// Place your key bindings in this file to override the defaultsauto[]
+[
+    {
+        "key": "shift+up",
+        "command": "editor.action.transformToUppercase"
+    },
+    {
+        "key": "shift+down",
+        "command": "editor.action.transformToLowercase"
+    },
+    {
+        "key": "ctrl+n ctrl+o",
+        "command": "workbench.action.files.openFile",
+        "when": "true"
+    },
+    {
+        "key": "ctrl+o",
+        "command": "-workbench.action.files.openFile",
+        "when": "true"
+    },
+    {
+        "key": "ctrl+shift+b",
+        "command": "workbench.action.toggleSidebarVisibility"
+    },
+    {
+        "key": "ctrl+b",
+        "command": "-workbench.action.toggleSidebarVisibility"
+    },
+    {
+        "key": "ctrl+alt+z",
+        "command": "workbench.action.quickOpen"
+    },
+    {
+        "key": "ctrl+p",
+        "command": "-workbench.action.quickOpen"
+    },
+    {
+        "key": "ctrl+alt+w",
+        "command": "workbench.action.closeActiveEditor"
+    },
+    {
+        "key": "ctrl+w",
+        "command": "-workbench.action.closeActiveEditor"
+    },
+    {
+        "key": "ctrl+alt+h",
+        "command": "workbench.action.activityBarLocation.hide"
+    },
+    {
+        "key": "ctrl+alt+a",
+        "command": "workbench.action.focusActivityBar"
+    },
+    {
+        "key": "ctrl+k ctrl+z",
+        "command": "workbench.action.closeEditorsInGroup"
+    },
+    {
+        "key": "ctrl+k w",
+        "command": "-workbench.action.closeEditorsInGroup"
+    },
+    {
+        "key": "ctrl+alt+[Period]",
+        "command": "fzf-quick-open.runFzfSearchProjectRoot"
+    },
+    {
+        "key": "ctrl+alt+t",
+        "command": "glassit.increase"
+    },
+    {
+        "key": "ctrl+alt+z",
+        "command": "-glassit.increase"
+    },
+    {
+        "key": "ctrl+b s",
+        "command": "workbench.action.toggleStatusbarVisibility"
+    },
+    {
+        "key": "ctrl+h",
+        "command": "workbench.action.terminal.focusPreviousPane",
+        "when": "terminalFocus"
+    },
+    {
+        "key": "ctrl+l",
+        "command": "workbench.action.terminal.focusNextPane",
+        "when": "terminalFocus"
+    }
+]

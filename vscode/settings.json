@@ -1,0 +1,200 @@
+{
+    "[python]": {
+        "editor.formatOnType": true
+    },
+    "security.workspace.trust.untrustedFiles": "open",
+    "editor.fontLigatures": true,
+    "editor.fontFamily": "Fira Code SemiBold",
+    "editor.fontWeight": "600",
+    "redhat.telemetry.enabled": false,
+    "typescript.updateImportsOnFileMove.enabled": "always",
+    "editor.minimap.enabled": false,
+    "workbench.settings.applyToAllProfiles": [
+        "vim.smartRelativeLine",
+        "workbench.editor.pinnedTabSizing",
+        "editor.cursorSurroundingLines"
+    ],
+    "vim.smartRelativeLine": true,
+    // "editor.cursorSmoothCaretAnimation": "on",
+    "workbench.activityBar.location": "top",
+    "workbench.editor.pinnedTabSizing": "compact",
+    "window.density.editorTabHeight": "compact",
+    // "editor.cursorSurroundingLines": 150,
+    "cmake.showOptionsMovedNotification": false,
+    "workbench.colorTheme": "Visual Studio 2019 Dark",
+    "json.schemas": [],
+    "debug.openDebug": "neverOpen",
+
+    "vim.normalModeKeyBindingsNonRecursive": [
+        {
+            "before": [
+                "<leader>",
+                "o"
+            ],
+            "commands": [
+                "workbench.action.quickOpen"
+            ]
+        },
+        {
+            "before": [
+                "<leader>",
+                "w"
+            ],
+            "commands": [
+                "workbench.action.files.save"
+            ]
+        },
+        {
+            "before": [
+                "<leader>",
+                "h"
+            ],
+            "commands": [
+                "workbench.action.navigateLeft"
+            ]
+        },
+        {
+            "before": [
+                "<leader>",
+                "l"
+            ],
+            "commands": [
+                "workbench.action.navigateRight"
+            ]
+        },
+        {
+            "before": [
+                "<leader>",
+                "k"
+            ],
+            "commands": [
+                "workbench.action.navigateUp"
+            ]
+        },
+        {
+            "before": [
+                "<leader>",
+                "j"
+            ],
+            "commands": [
+                "workbench.action.navigateDown"
+            ]
+        },
+        {
+            "before": [
+                "<leader>",
+                "v"
+            ],
+            "commands": [
+                "workbench.action.splitEditorDown"
+            ]
+        },
+        {
+            "before": [
+                "<leader>",
+                "r"
+            ],
+            "commands": [
+                "editor.action.startFindReplaceAction"
+            ]
+        },
+        {
+            "before": [
+                "<leader>",
+                "g",
+                "s"
+            ],
+            "commands": [
+                "workbench.action.gotoSymbol"
+            ]
+        },
+        {
+            "before": [
+                "<leader>",
+                "f"
+            ],
+            "commands": [
+                "actions.find"
+            ]
+        },
+        {
+            "before": [
+                "<leader>",
+                ","
+            ],
+            "commands": [
+                "workbench.action.navigateBack"
+            ]
+        },
+        {
+            "before": [
+                "<leader>",
+                "."
+            ],
+            "commands": [
+                "workbench.action.navigateForward"
+            ]
+        },
+        {
+            "before": [
+                "<leader>",
+                "t"
+            ],
+            "commands": [
+                "workbench.action.terminal.toggleTerminal"
+            ]
+        },
+        {
+            "before": [
+                "<leader>",
+                "d",
+                "b"
+            ],
+            "commands": [
+                "editor.debug.action.toggleBreakpoint"
+            ]
+        },
+        {
+            "before": [
+                "<leader>",
+                "b"
+            ],
+            "commands": [
+                "workbench.action.toggleStatusbarVisibility"
+            ]
+        },
+        {
+            "before": [
+                "<leader>",
+                "d",
+                "r"
+            ],
+            "commands": [
+                "workbench.debug.viewlet.action.removeAllBreakpoints"
+            ]
+        },
+        {
+            "before": [
+                "<leader>",
+                "i"
+            ],
+            "commands": [
+                "editor.action.showHover"
+            ]
+        },
+        {
+            "before": [
+                "<leader>",
+                "w"
+            ],
+            "commands": [
+                "workbench.action.files.saveAll"
+            ]
+        },
+    ],
+    "vim.leader": " ",
+    "glassit.alpha": 255,
+    "workbench.editor.editorActionsLocation": "hidden",
+    "workbench.editor.showTabs": "none",
+    "database-client.autoSync": true
+}
