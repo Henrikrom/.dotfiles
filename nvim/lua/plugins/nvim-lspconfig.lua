@@ -11,17 +11,22 @@ return {
             'hrsh7th/cmp-path',        -- Path source
             'hrsh7th/cmp-cmdline',     -- Cmdline source
             'saadparwaiz1/cmp_luasnip', -- Luasnip source
-            'L3MON4D3/LuaSnip'
+            {
+                'L3MON4D3/LuaSnip',
+                config = function ()
+                    require("hbr.snippets")
+                end
+            },
+            'rafamadriz/friendly-snippets'
         },
         config = function()
             require('mason').setup()
 
-
-            require('mason-lspconfig').setup({
-                ensure_installed = {
-                    "lua_ls"
-                }
-            })
+            -- require('mason-lspconfig').setup({
+            --     ensure_installed = {
+            --         "lua_ls"
+            --     }
+            -- })
 
             local on_attach = function(_, _)
                 vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, {})
@@ -44,6 +49,7 @@ return {
             require('lspconfig').omnisharp.setup({
                 cmd = { "omnisharp" },  -- This assumes omnisharp is available in your PATH
                 filetypes = { "cs", "razor" },
+                capabilities = require("cmp_nvim_lsp").default_capabilities(),
                 on_attach = on_attach
             })
 
@@ -97,6 +103,8 @@ return {
                 print("LuaSnip not found!")
                 return
             end
+
+            require("luasnip.loaders.from_vscode").lazy_load()
 
             local cmp = require('cmp')
 
