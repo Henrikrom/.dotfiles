@@ -1,6 +1,6 @@
 return {
-    -- "Henrikrom/jumpop.nvim",
-    dir = "/home/hbr/code/jumpop.nvim",
+    "Henrikrom/jumpop.nvim",
+    -- dir = "/home/hbr/code/jumpop.nvim",
     name = "jumpop.nvim",
     config = function()
         require("jumpop").setup({
