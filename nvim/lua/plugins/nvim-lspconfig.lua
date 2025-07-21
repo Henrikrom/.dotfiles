@@ -20,7 +20,13 @@ return {
             'rafamadriz/friendly-snippets'
         },
         config = function()
-            require('mason').setup()
+
+            require("mason").setup({
+                registries = {
+                    "github:mason-org/mason-registry",
+                    "github:Crashdummyy/mason-registry",
+                },
+            })
 
             -- require('mason-lspconfig').setup({
             --     ensure_installed = {
@@ -54,12 +60,13 @@ return {
                 on_attach = on_attach
             }
 
-            require('lspconfig').omnisharp.setup({
-                cmd = { "omnisharp" },  -- This assumes omnisharp is available in your PATH
-                filetypes = { "cs", "razor" },
-                capabilities = require("cmp_nvim_lsp").default_capabilities(),
-                on_attach = on_attach
-            })
+            -- require('lspconfig').omnisharp.setup({
+            --     cmd = { "OmniSharp" },  -- This assumes omnisharp is available in your PATH
+            --     -- filetypes = { "cs", "razor" },
+            --     filetypes = { "cs" },
+            --     capabilities = require("cmp_nvim_lsp").default_capabilities(),
+            --     on_attach = on_attach
+            -- })
 
             require('lspconfig').pyright.setup({
                 on_attach = on_attach
@@ -76,35 +83,13 @@ return {
                 on_attach = on_attach
             })
 
-            -- require('roslyn').setup {
-            --     cmd = {
-            --         '--stdio';
-            --         '--logLevel=Information',
-            --         '--extensionLogDirectory=' .. vim.fs.dirname(vim.lsp.get_log_path()),
-            --         '--razorSourceGenerator=' .. vim.fs.joinpath(
-            --         vim.fn.stdpath 'data' --[[@as string]],
-            --         'mason',
-            --         'packages',
-            --         'roslyn',
-            --         'libexec',
-            --         'Microsoft.CodeAnalysis.Razor.Compiler.dll'
-            --         ),
-            --         '--razorDesignTimePath=' .. vim.fs.joinpath(
-            --         vim.fn.stdpath 'data' --[[@as string]],
-            --         'mason',
-            --         'packages',
-            --         'rzls',
-            --         'libexec',
-            --         'Targets',
-            --         'Microsoft.NET.Sdk.Razor.DesignTime.targets'
-            --         ),
-            --     },
-            --     config = {
-            --         --[[ the rest of your roslyn config ]]
-            --         handlers = require 'rzls.roslyn_handlers',
-            --     },
-            --     on_attach = on_attach
-            -- }
+            local util = require("lspconfig.util")
+            require('lspconfig').html.setup({
+                root_dir = util.root_pattern(".git", "*.csproj", "*.sln") or function() return vim.loop.cwd() end,
+                filetypes = { "html", "razor", "cshtml" },
+                capabilities = require("cmp_nvim_lsp").default_capabilities(),
+                on_attach = on_attach
+            })
 
             local ok, luasnip = pcall(require, "luasnip")
             if not ok then
