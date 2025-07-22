@@ -67,16 +67,19 @@ ls.add_snippets("cs", {
         i(1, "Id"),
         t(' { get; set; }'),
     }),
+
     s("pubi", {
         t('public int '),
         i(1, "Count"),
         t(' { get; set; }'),
     }),
+
     s("pubb", {
         t('public bool '),
         i(1, "Exists"),
         t(' { get; set; }'),
     }),
+
     s("public a", fmt(
     [[
     public async Task {}({}) {{
@@ -84,6 +87,22 @@ ls.add_snippets("cs", {
     }}
     ]], {
         i(1, "Run"), i(2, "object obj"), i(3, "return Task.CompletedTask;")
+    })),
+
+    s("xunit", fmt(
+    [[
+    namespace {};
+
+    public class {} {{
+
+      [Fact]
+      public void Testing()
+      {{
+        Assert.True(true);
+      }}
+    }}
+    ]], {
+        i(1, "namspace"), i(2, "TestClass")
     }))
 })
 
