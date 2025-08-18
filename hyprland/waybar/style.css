@@ -1,309 +1,232 @@
-
-@keyframes blink-warning {
-    70% {
-        color: @light;
-    }
-
-    to {
-        color: @light;
-        background-color: @warning;
-    }
-}
-
-@keyframes blink-critical {
-    70% {
-      color: @light;
-    }
-
-    to {
-        color: @light;
-        background-color: @critical;
-    }
-}
-
-
-/* -----------------------------------------------------------------------------
- * Styles
- * -------------------------------------------------------------------------- */
-
-/* COLORS */
-
-/* Nord */
-@define-color bg #2E3440;
-/*@define-color bg #353C4A;*/
-@define-color light #D8DEE9;
-/*@define-color dark @nord_dark_font;*/
-@define-color warning #ebcb8b;
-@define-color critical #BF616A;
-@define-color mode #434C5E;
-/*@define-color workspaces @bg;*/
-/*@define-color workspaces @nord_dark_font;*/
-/*@define-color workspacesfocused #434C5E;*/
-@define-color workspacesfocused #4C566A;
-@define-color tray @workspacesfocused;
-@define-color sound #EBCB8B;
-@define-color network #5D7096;
-@define-color memory #546484;
-@define-color cpu #596A8D;
-@define-color temp #4D5C78;
-@define-color layout #5e81ac;
-@define-color battery #88c0d0;
-@define-color date #434C5E;
-@define-color time #434C5E;
-@define-color backlight #434C5E;
-@define-color nord_bg #434C5E;
-@define-color nord_bg_blue #546484;
-@define-color nord_light #D8DEE9;
-@define-color nord_light_font #D8DEE9;
-@define-color nord_dark_font #434C5E;
-
-/* Reset all styles */
+/* --- Global Styles --- */
 * {
-    border: none;
-    border-radius: 3px;
-    min-height: 0;
-    margin: 0.2em 0.3em 0.2em 0.3em;
+  font-family: 'SF Pro Text', 'Inter', 'Segoe UI, NotoSans Nerd Font', sans-serif;
+  /* font-family: 'FiraCode Nerd Font', 'Inter', 'Segoe UI, NotoSans Nerd Font', sans-serif; */
+  font-size: 14px;
+  min-height: 0;
+  padding-right: 0px;
+  padding-left: 0px;
+  padding-bottom: 0px;
 }
 
-/* The whole bar */
+/* --- Waybar Container --- */
 #waybar {
-    background: rgba(0, 0, 0, 0.0);
-    /* background: @bg; */
-    color: @light;
-    font-family: "Cantarell", "Font Awesome 5 Pro";
-    font-size: 16px;
-    font-weight: bold;
+  background: transparent;
+  color: #c6d0f5;
+  margin: 0px;
+  font-weight: 500;
 }
 
-/* Each module */
-#battery,
-#clock,
-#cpu,
-#custom-layout,
-#memory,
-#mode,
-#network,
-#pulseaudio,
-#temperature,
-#custom-alsa,
-#custom-pacman,
-#custom-weather,
-#custom-gpu,
-#tray,
-#backlight,
-#language,
-#custom-cpugovernor {
-    padding-left: 0.6em;
-    padding-right: 0.6em;
-    margin-right: 0.4em; /* Add space between modules */
-
-
+/* --- Left Modules (Individual, Fully Rounded Blocks - With Horizontal Spacing & Simple Hover) --- */
+#workspaces,
+#custom-uptime,
+#cpu {
+  background-color: #1a1b26;
+  padding: 0.3rem 0.7rem;
+  margin: 5px 0px; /* 5px top/bottom margin, 0px left/right (base for individual control) */
+  /* border-radius: 6px; These modules are always rounded */
+  margin-bottom: 10px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  min-width: 0;
+  border: none;
+  /* Transition for background-color and color only */
+  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
 }
-
-/* Each module that should blink */
-#mode,
-#memory,
-#temperature,
-#battery {
-    animation-timing-function: linear;
-    animation-iteration-count: infinite;
-    animation-direction: alternate;
-}
-
-/* Each critical module */
-#memory.critical,
-#cpu.critical,
-#temperature.critical,
-#battery.critical {
-    color: @critical;
-}
-
-/* Each critical that should blink */
-#mode,
-#memory.critical,
-#temperature.critical,
-#battery.critical.discharging {
-    animation-name: blink-critical;
-    animation-duration: 2s;
-}
-
-/* Each warning */
-#network.disconnected,
-#memory.warning,
-#cpu.warning,
-#temperature.warning,
-#battery.warning {
-    background: @warning;
-    color: @nord_dark_font;
-}
-
-/* Each warning that should blink */
-#battery.warning.discharging {
-    animation-name: blink-warning;
-    animation-duration: 3s;
-}
-
-/* And now modules themselves in their respective order */
-
-#mode { /* Shown current Sway mode (resize etc.) */
-    color: @light;
-    background: @mode;
-}
-
-/* Workspaces stuff */
 
 #workspaces {
- /*   color: #D8DEE9;
-    margin-right: 10px;*/
+  padding: 2px;
+  border-radius: 6px; 
+  margin-left: 7px; /* Margin from the far left edge */
+  margin-right: 5px; /* Spacing after the workspaces module */
+}
+
+#custom-uptime {
+  border-radius: 6px; 
+  margin-right: 5px; /* Spacing after the uptime module */
+}
+
+/* Simple Hover effects for individual left modules - BRIGHTER COLOR */
+#custom-uptime:hover,
+#cpu:hover {
+  background-color: rgb(41, 42, 53); /* Brighter highlight */
 }
 
 #workspaces button {
-    font-weight: bold;
-    padding: 0;
-    opacity: 1;
-    background: @nord_bg; /* Example: background color for inactive workspaces */
-    color: @nord_light;   /* Text color */
-    font-size: 1em;
-}
-
-#workspaces button.focused {
-    background: @layout;    /* Use any defined color, e.g., @layout for blue */
-    color: @nord_light;
-    opacity: 1;
-    padding: 0 0.4em;
-}
-
-#workspaces button.urgent {
-    background: @critical;
-    color: @nord_light;
-    border: none;
-    opacity: 1;
+  color: #babbf1;
+  border-radius: 5px; /* Workspaces buttons are always rounded */
+  padding: 0.3rem 0.6rem;
+  background: transparent;
+  transition: all 0.2s ease-in-out;
+  border: none;
+  outline: none;
 }
 
 #workspaces button.active {
-    background: #13131d; 
+  color: #99d1db;
+  background-color: rgba(153, 209, 219, 0.1);
+  box-shadow: inset 0 0 0 1px rgba(153, 209, 219, 0.2);
 }
 
-#window {
-    background: @nord_bg;
-    margin-right: 80px;
-    margin-left: 80px;
-    padding-left: 10px;
-    padding-right: 10px;
-    font-weight: normal;
+#workspaces button:hover {
+  background: rgb(41, 42, 53); /* Reference bright hover color */
+  color: #c6d0f5;
 }
+
+/* --- Center Module (Individual, Fully Rounded Block - With Simple Hover) --- */
+#clock {
+  background-color: #1a1b26;
+  padding: 0.3rem 0.7rem;
+  margin: 5px 0px 10px;
+  border-radius: 6px; /* This module is always rounded */
+  box-shadow: 0 1px 3px rgba(153, 209, 219, 0.2);
+  min-width: 0;
+  border: none;
+  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+
+/* Simple Hover effect for clock module - BRIGHTER COLOR */
+#clock:hover {
+  background-color: rgba(153, 209, 219, 0.1); /* Brighter highlight */
+}
+
+#custom-pomodoro {
+    background-color: #1a1b26; /* Consistent dark background */
+    padding: 0.3rem 0.7rem; /* Consistent padding with other modules (e.g., cpu, uptime) */
+    margin: 5px 0px; /* 5px top/bottom margin, 0px left/right (base for individual control) */
+    margin-bottom: 10px;
+    border-radius: 6px; /* Consistent rounded corners with other individual modules */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Consistent shadow */
+    min-width: 0;
+    border: none;
+    outline: none; /* Ensure no default outline */
+    /* Transition for background-color, color, outline, and box-shadow for smooth effect */
+    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out, outline 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    color: #babbf1; /* A calm color, consistent with custom-uptime */
+    font-weight: 600; /* Slightly bolder for the timer, consistent with clock */
+}
+
+/* Positioning and spacing for the custom-pomodoro module */
+#custom-pomodoro {
+    margin-left: 5px; /* Spacing from the previous module (e.g., clock) */
+    margin-right: 5px; /* Spacing before the seamless right bar starts (e.g., bluetooth) */
+}
+
+/* Hover effect for the new pomodoro module (consistent with others + rectangular outline) */
+#custom-pomodoro:hover {
+    background-color: rgb(41, 42, 53); /* Brighter highlight, consistent with other individual modules */
+    color: #c6d0f5; /* Text color change on hover, consistent with other individual modules */
+    outline: 1px solid rgba(255, 255, 255, 0.1); /* Rectangular outline on hover */
+    outline-offset: -1px;
+}
+
+/* --- Highlighted state for Pomodoro module when running (work or break) --- */
+#custom-pomodoro.work,
+#custom-pomodoro.break {
+  color: #99d1db; /* Text color consistent with active workspaces button */
+  background-color: rgba(153, 209, 219, 0.1); /* Background color consistent with active workspaces button */
+  box-shadow: inset 0 0 0 1px rgba(153, 209, 219, 0.2); /* Inner shadow for outline effect */
+  outline: none;
+}
+
+/* --- Right Modules (Single, Seamless Bar ) --- */
+#bluetooth,
+#pulseaudio,
+#backlight,
+#network,
+#custom-lock,
+#battery {
+  background-color: #1a1b26;
+  padding: 0.3rem 0.7rem;
+  margin: 5px 0px; 
+  /* border-radius: 5px; */
+  box-shadow: none;
+  min-width: 0;
+  border: none;
+  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+  margin-bottom: 10px;
+}
+
+#bluetooth:hover,
+#pulseaudio:hover,
+#backlight:hover,
+#network:hover,
+#custom-lock:hover,
+#battery:hover {
+  background-color: rgb(41, 42, 53);
+}
+
 #bluetooth {
-    background: @nord_bg_blue;
-    font-size: 1.2em;
-    font-weight: bold;
-    padding: 0 0.6em;
-}
-#custom-gpu {
-    background: @nord_bg;
-    font-weight: bold;
-    padding: 0 0.6em;
-}
-#custom-weather {
-    background: @mode;
-    font-weight: bold;
-    padding: 0 0.6em;
-}
-#custom-pacman {
-    background: @nord_light;
-    color: @nord_dark_font;
-    font-weight: bold;
-    padding: 0 0.6em;
-}
-#custom-scratchpad-indicator {
-    background: @nord_light;
-    color: @nord_dark_font;
-    font-weight: bold;
-    padding: 0 0.6em;
-}
-#idle_inhibitor {
-    background: @mode;
-    /*font-size: 1.6em;*/
-    font-weight: bold;
-    padding: 0 0.6em;
-}
-#custom-alsa {
-    background: @sound;
-}
-
-#network {
-    background: @nord_bg_blue;
-}
-
-#memory {
-    background: @memory;
-}
-
-#cpu {
-    background: @nord_bg;
-    color: #D8DEE9;
-}
-#cpu.critical {
-    color: @nord_dark_font;
-}
-#language {
-    background: @nord_bg_blue;
-    color: #D8DEE9;
-    padding: 0 0.4em;
-}
-#custom-cpugovernor {
-    background-color: @nord_light;
-    color: @nord_dark_font;
-}
-#custom-cpugovernor.perf {
-    
-}
-#temperature {
-    background-color: @nord_bg;
-    color: #D8DEE9;
-}
-#temperature.critical {
-    background:  @critical;
-}
-#custom-layout {
-    background: @layout;
+  margin-left: 0px; 
+  border-top-left-radius: 6px;
+  border-bottom-left-radius: 6px;
 }
 
 #battery {
-    background: @battery;
+  border-top-right-radius: 6px;
+  border-bottom-right-radius: 6px;
+  margin-right: 7px;
 }
 
-#backlight {
-    background: @backlight;
+#custom-uptime {
+  color: #babbf1;
+}
+#cpu {
+  color: #c6d0f5;
 }
 
 #clock {
-    background: @nord_bg_blue;
-    color: #D8DEE9;
-}
-#clock.date {
-    background: @date;
+  color: #99d1db;
+  font-weight: 500;
 }
 
-#clock.time {
-    background: @mode;
+#pulseaudio {
+  color: #c6d0f5;
+}
+#backlight {
+  color: #c6d0f5;
 }
 
-#pulseaudio { /* Unsused but kept for those who needs it */
-    background: @nord_bg_blue;
-    color: #D8DEE9;
-    
+#network {
+  color: #c6d0f5;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
 }
 
-#pulseaudio.muted {
-    background: #BF616A;
-    color: #BF616A;
-    /* No styles */
+#network.disconnected {
+  color: #e78284;
 }
-#pulseaudio.source-muted {
-    background: #D08770;
-    color: #D8DEE9;
-    /* No styles */
+
+#custom-lock {
+  color: #babbf1;
 }
-#tray {
-    background: #434C5E;
+#bluetooth {
+  color: #888888;
+  font-size: 16px;
+}
+#bluetooth.on {
+  color: #2196f3;
+}
+#bluetooth.connected {
+  color: #99d1db;
+}
+#battery {
+  color: #99d1db;;
+}
+#battery.charging {
+  color: #a6d189;
+}
+#battery.warning:not(.charging) {
+  color: #e78284;
+}
+
+/* --- Tooltip Styles --- */
+tooltip {
+  background-color: #1a1b26;
+  color: #dddddd;
+  padding: 5px 12px;
+  margin: 5px 0px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  font-size: 12px;
 }

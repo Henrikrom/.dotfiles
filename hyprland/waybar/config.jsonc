@@ -1,30 +1,132 @@
-// -*- mode: jsonc -*-
 {
-    "layer": "top", // Waybar at top layer
-    "position": "top", // Waybar position (top|bottom|left|right)
-    "height": 42, // Waybar height (to be removed for auto height)
-    // "width": 1280, // Waybar width
-    "spacing": 4, // Gaps between modules (4px)
-    // Choose the order of the modules
-    "modules-left": [
-        // "custom/arch",
-        "hyprland/workspaces"
-    ],
-    "modules-center": [
-        // "hyprland/window"
-        "clock"
-    ],
-    "modules-right": [
-        "pulseaudio",
-        "network",
-        "cpu",
-        "memory",
-        "battery",
-        "battery#bat2",
-    ],
-    //Modules configuration
+  "layer": "top",
+  "position": "top",
+  "margin-bottom": -10,
+  "spacing" : 0,
+  "modules-left": [
+  "hyprland/workspaces",
+  "custom/uptime",
+  ],
 
-    "include": [
-		"~/.config/waybar/modules.json"
-	]
+  "modules-center": ["clock"],
+
+  "modules-right": [
+    "custom/pomodoro",
+    "network",
+    "pulseaudio", 
+    "backlight",
+    "cpu",
+    "battery",
+  ],
+
+  "hyprland/workspaces": {
+    "format": "{name}: {icon}",
+    "format-icons": {
+      "active": "",
+      "default": ""
+    }
+  },
+
+  "custom/music": {
+    "format": "  {}",
+    "escape": true,
+    "interval": 5,
+    "tooltip": false,
+    "exec": "playerctl metadata --format='{{ artist }} - {{ title }}'",
+    "on-click": "playerctl play-pause",
+    "max-length": 50
+  },
+
+  "clock": {
+    "tooltip": false,
+    "format": "{:%H:%M:%S  -  %A, %d}",
+    "interval": 1
+  },
+
+ //  "network": {
+ //    "format-wifi": "󰤢",
+ //    "format-ethernet": "󰈀 ",
+ //    "format-disconnected": "󰤠 ",
+ //    "interval": 5,
+ //    "tooltip-format": "{essid} ({signalStrength}%)",
+ //    "on-click": "nm-connection-editor"
+ //
+ // },
+    "network": {
+        "format-wifi": "  {ipaddr}",
+        "format-ethernet": "{ipaddr}/{cidr} ",
+        "tooltip-format": "{ifname} via {gwaddr} ",
+        "format-linked": "{ifname} (No IP) ",
+        "format-disconnected": "Disconnected ⚠",
+        "tooltip-format": "{essid} ({signalStrength}%)",
+	"on-click": "nm-connection-editor"},
+
+  "cpu": {
+    "interval": 1,
+    "format": "  {icon0}{icon1}{icon2}{icon3} {usage:>2}%",
+    "format-icons": ["▁", "▂", "▃", "▄", "▅", "▆", "▇", "█"],
+    "on-click": "kitty -e htop"
+  },
+
+  "memory": {
+    "interval": 30,
+    "format": "  {used:0.1f}G/{total:0.1f}G",
+    "tooltip-format": "Memory"
+  },
+
+  "custom/uptime": {
+    "format": "{}",
+    "format-icon": [""], 
+    "tooltip": false,
+    "interval": 1600,
+    "exec": "$HOME/.config/waybar/scripts/uptime.sh"
+  },
+  
+  "backlight": {
+        "format": "{icon}  {percent}%",
+        "format-icons": ["","󰃜", "󰃛", "󰃞","󰃝","󰃟","󰃠"],
+        "tooltip": false
+  },
+  
+  "pulseaudio": {
+    "format": "{icon}  {volume}%",
+    "format-muted": "",
+    "format-icons": {
+      "default": ["", "", " "]
+    },
+    "on-click": "pavucontrol"
+  },
+
+  "battery": {
+        "interval":2,
+        "states": {
+            // "good": 95,
+            "warning": 25,
+            "critical": 15
+        },
+        "format": "{icon}  {capacity}%",
+        "format-full": "{icon}  {capacity}%",
+        "format-charging": " {capacity}%",
+        "format-plugged": " {capacity}%",
+        "format-alt": "{icon} {time}",
+        // "format-good": "", // An empty format will hide the module
+        // "format-full": "",
+        "format-icons": ["", "", "", "", ""]
+  },
+  
+  "custom/lock": {
+  "tooltip": false,
+  "on-click": "sh -c '(sleep 0s; hyprlock)' & disown",
+  "format" : ""
+  },
+
+  "custom/pomodoro": {
+	"format": "{}",
+	"return-type": "json",
+	"exec": "waybar-module-pomodoro --no-work-icons",
+	"on-click": "waybar-module-pomodoro toggle",
+	"on-click-right": "waybar-module-pomodoro reset",
+  },
+
 }
+
