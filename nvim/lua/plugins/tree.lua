@@ -6,6 +6,8 @@ return {
   config = function()
     require("nvim-tree").setup({
       -- Nvim-Tree options
+      hijack_netrw = false,
+      disable_netrw = false,
       view = {
           width = 30, -- Width of the Nvim-Tree window
           side = "left", -- Side of the screen to display Nvim-Tree
