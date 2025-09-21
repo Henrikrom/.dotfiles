@@ -33,7 +33,10 @@ return {
             vim.keymap.set("n", "gd", vim.lsp.buf.definition, {})
             vim.keymap.set("n", "gi", vim.lsp.buf.implementation, {})
             vim.keymap.set("n", "gr", require("telescope.builtin").lsp_references, {})
-            vim.keymap.set("n", "<leader>i", vim.lsp.buf.hover, {})
+            vim.keymap.set("n", "<leader>i", function()
+                vim.lsp.buf.hover({ border = "rounded" })
+            end, {})
+
             vim.api.nvim_create_autocmd("CursorHold", {
                 callback = function()
                     vim.diagnostic.open_float(nil, { focus = false })
