@@ -16,7 +16,8 @@ return {
         local dap = require("dap")
         local dapui = require("dapui")
 
-        dapui.setup();
+        dapui.setup()
+
 
         dap.listeners.before.attach.dapui_config = function()
             dapui.open()
@@ -50,11 +51,84 @@ return {
                 name = "launch - netcoredbg",
                 request = "launch",
                 program = function()
+                    -- helper to pick project
+                    local function pick_project()
+                        local projects = {}
 
-                    return vim.fn.input('Path to dll', vim.fn.getcwd() .. '/bin/Debug/net9.0', 'file')
+                        -- if there's a solution, use dotnet sln list
+                        local sln = vim.fn.glob("*.sln")
+                        if sln ~= "" then
+                            local handle = io.popen("dotnet sln " .. sln .. " list")
+                            if handle then
+                                for line in handle:lines() do
+                                    if line:match("%.csproj$") then
+                                        table.insert(projects, vim.fn.fnamemodify(line, ":p")) -- absolute path
+                                    end
+                                end
+                                handle:close()
+                            end
+                        end
+
+                        -- fallback: find all csproj files under cwd
+                        if #projects == 0 then
+                            projects = vim.fn.globpath(vim.fn.getcwd(), "**/*.csproj", false, true)
+                        end
+
+                        if #projects == 0 then
+                            return nil
+                        elseif #projects == 1 then
+                            return projects[1]
+                        else
+                            -- show a numbered menu
+                            local choices = { "Select project:" }
+                            for _, proj in ipairs(projects) do
+                                table.insert(choices, proj)
+                            end
+                            local choice = vim.fn.inputlist(choices)
+                            if choice > 0 and choice <= #projects then
+                                return projects[choice]
+                            end
+                        end
+                        return nil
+                    end
+
+                    local csproj = pick_project()
+                    if csproj then
+                        local project_dir = vim.fn.fnamemodify(csproj, ":h")
+                        local project_name = vim.fn.fnamemodify(csproj, ":t:r")
+                        local dll = vim.fn.glob(project_dir .. "/bin/Debug/net*/" .. project_name .. ".dll")
+                        if dll ~= "" and vim.fn.filereadable(dll) == 1 then
+                            return dll
+                        end
+                    end
+
+                    -- fallback: manual input
+                    return vim.fn.input("Path to dll: ", vim.fn.getcwd() .. "/", "file")
                 end,
+
+
                 preLaunchTask = "dotnet build"
             },
+            {
+                type = "coreclr",
+                name = "test - netcoredbg",
+                request = "launch",
+                program = function()
+                    -- detect test project dll
+                    local cwd = vim.fn.getcwd()
+                    local csprojs = vim.fn.glob(cwd .. "/*.csproj", false, true)
+                    if #csprojs > 0 then
+                        local project_name = vim.fn.fnamemodify(csprojs[1], ":t:r")
+                        local dll = vim.fn.glob(cwd .. "/bin/Debug/net*/" .. project_name .. ".dll")
+                        if dll ~= "" and vim.fn.filereadable(dll) == 1 then
+                            return dll
+                        end
+                    end
+                    return vim.fn.input("Path to test dll: ", cwd .. "/", "file")
+                end,
+            },
         }
+
+        dap.configurations.razor = dap.configurations.cs
     end,
 }
