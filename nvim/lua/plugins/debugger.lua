@@ -108,25 +108,7 @@ return {
 
 
                 preLaunchTask = "dotnet build"
-            },
-            {
-                type = "coreclr",
-                name = "test - netcoredbg",
-                request = "launch",
-                program = function()
-                    -- detect test project dll
-                    local cwd = vim.fn.getcwd()
-                    local csprojs = vim.fn.glob(cwd .. "/*.csproj", false, true)
-                    if #csprojs > 0 then
-                        local project_name = vim.fn.fnamemodify(csprojs[1], ":t:r")
-                        local dll = vim.fn.glob(cwd .. "/bin/Debug/net*/" .. project_name .. ".dll")
-                        if dll ~= "" and vim.fn.filereadable(dll) == 1 then
-                            return dll
-                        end
-                    end
-                    return vim.fn.input("Path to test dll: ", cwd .. "/", "file")
-                end,
-            },
+            }
         }
 
         dap.configurations.razor = dap.configurations.cs
