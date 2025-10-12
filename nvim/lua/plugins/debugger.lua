@@ -3,14 +3,14 @@ return {
     dependencies = {
         "rcarriga/nvim-dap-ui",
         "nvim-neotest/nvim-nio",
-        {
-            "mfussenegger/nvim-dap-python",
-            config = function()
-                local dap_python = require("dap-python")
-                dap_python.setup("/usr/bin/python")
-                dap_python.test_runner = "pytest"
-            end
-        }
+        -- {
+        --     "mfussenegger/nvim-dap-python",
+        --     config = function()
+        --         local dap_python = require("dap-python")
+        --         dap_python.setup("/usr/bin/python")
+        --         dap_python.test_runner = "pytest"
+        --     end
+        -- }
     },
     config = function()
         local dap = require("dap")

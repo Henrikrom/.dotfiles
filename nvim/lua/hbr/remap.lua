@@ -82,3 +82,11 @@ vim.keymap.set('n', 'da)', 'mzda)`z', { noremap = true, silent = true })
 vim.keymap.set('n', 'da{', 'mzda{`z', { noremap = true, silent = true })
 vim.keymap.set('n', 'da}', 'mzda}`z', { noremap = true, silent = true })
 
+vim.keymap.set('n', "'",
+  function()
+    local char = vim.fn.getcharstr()
+    vim.cmd('normal! `' .. char)
+  end,
+  { desc = "Jump to exact mark (like ` but easier)" }
+)
+
