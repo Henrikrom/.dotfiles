@@ -9,6 +9,7 @@ return {
             darkness = "stark",        -- options: 'warm', 'stark', 'dim', 'bright', 'default'
         }
 
-        vim.cmd.colorscheme("zenbones")
+        -- vim.cmd("colorscheme zenbones")
+        -- vim.cmd.colorscheme("zenbones")
     end,
 }
