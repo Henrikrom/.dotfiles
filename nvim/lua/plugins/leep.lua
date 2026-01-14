@@ -2,7 +2,7 @@ return {
     "ggandor/leap.nvim",
     version = "*", -- Use for stability; omit to use `main` branch for the latest features
     config = function()
-        require("leap").create_default_mappings()
+        require("leap")
 
         vim.keymap.set('n', 's', '<Plug>(leap-anywhere)')
         vim.keymap.set('x', 's', '<Plug>(leap)')

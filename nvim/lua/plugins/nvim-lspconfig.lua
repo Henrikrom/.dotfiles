@@ -80,6 +80,11 @@ return {
                 capabilities = capabilities,
             }
 
+            vim.lsp.config["svelte"] = {
+                on_attach = on_attach,
+                capabilities = capabilities,
+            }
+
             vim.lsp.config["html"] = {
                 root_dir = util.root_pattern(".git", "*.csproj", "*.sln") or function()
                     return vim.loop.cwd()
@@ -95,6 +100,7 @@ return {
             vim.lsp.enable("pyright")
             vim.lsp.enable("clangd")
             vim.lsp.enable("ts_ls")
+            vim.lsp.enable("svelte")
             vim.lsp.enable("html")
 
             -- Snippet setup
