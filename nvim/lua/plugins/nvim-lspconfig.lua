@@ -83,6 +83,11 @@ return {
             vim.lsp.config["svelte"] = {
                 on_attach = on_attach,
                 capabilities = capabilities,
+                -- settings = {
+                --     svelte = {
+                --         format = { enable = true },
+                --     },
+                -- },
             }
 
             vim.lsp.config["html"] = {
@@ -102,6 +107,17 @@ return {
             vim.lsp.enable("ts_ls")
             vim.lsp.enable("svelte")
             vim.lsp.enable("html")
+
+            vim.api.nvim_create_autocmd("BufWritePre", {
+                pattern = "*.svelte",
+                callback = function()
+                    vim.lsp.buf.format({
+                        filter = function(client)
+                            return client.name == "svelte"
+                        end,
+                    })
+                end,
+            })
 
             -- Snippet setup
             local ok, luasnip = pcall(require, "luasnip")
@@ -151,4 +167,3 @@ return {
         end,
     },
 }
-

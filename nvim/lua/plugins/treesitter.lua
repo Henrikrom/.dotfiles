@@ -9,7 +9,8 @@ return {
             -- List of parsers to install
             ensure_installed = {
                 "javascript", "typescript", "python", "c",
-                "lua", "vim", "vimdoc", "query", "markdown", "markdown_inline"
+                "lua", "vim", "vimdoc", "query", "markdown", "markdown_inline",
+                "html", "css", "svelte"
             },
 
             -- Install parsers synchronously (applies to `ensure_installed`)
@@ -26,7 +27,9 @@ return {
                 -- Only enable this if you depend on 'syntax' for something specific
                 additional_vim_regex_highlighting = false,
             },
+            indent = {
+                enable = true,
+            },
         })
     end,
 }
-
