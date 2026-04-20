@@ -146,7 +146,6 @@ return {
                     { name = "nvim_lsp" },
                     { name = "buffer" },
                     { name = "path" },
-                    { name = "cmdline" },
                     { name = "luasnip" },
                 },
                 formatting = {
@@ -163,6 +162,22 @@ return {
                         return vim_item
                     end,
                 },
+            })
+
+            cmp.setup.cmdline({ "/", "?" }, {
+                mapping = cmp.mapping.preset.cmdline(),
+                sources = {
+                    { name = "buffer" },
+                },
+            })
+
+            cmp.setup.cmdline(":", {
+                mapping = cmp.mapping.preset.cmdline(),
+                sources = cmp.config.sources({
+                    { name = "path" },
+                }, {
+                    { name = "cmdline" },
+                }),
             })
         end,
     },

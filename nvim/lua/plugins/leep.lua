@@ -1,5 +1,5 @@
 return {
-    "ggandor/leap.nvim",
+    url = "https://codeberg.org/andyg/leap.nvim",
     version = "*", -- Use for stability; omit to use `main` branch for the latest features
     config = function()
         require("leap")
@@ -10,4 +10,3 @@ return {
         vim.keymap.set('o', 'S', '<Plug>(leap-backward)')
     end
 }
-

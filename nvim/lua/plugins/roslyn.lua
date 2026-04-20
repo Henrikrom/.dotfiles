@@ -26,10 +26,25 @@ return {
                 vim.fs.joinpath(rzls_path, "RazorExtension", "Microsoft.VisualStudioCode.RazorExtension.dll"),
             }
 
+            vim.lsp.config("rzls", {
+                cmd = { vim.fn.expand("$MASON/bin/rzls") },
+                filetypes = { "razor" },
+                on_attach = function(client)
+                    client.server_capabilities.documentFormattingProvider = true
+                    client.server_capabilities.documentRangeFormattingProvider = true
+                end,
+            })
+
+            vim.lsp.enable("rzls")
+
             vim.lsp.config("roslyn", {
                 cmd = cmd,
                 capabilities = require("cmp_nvim_lsp").default_capabilities(),
                 handlers = require("rzls.roslyn_handlers"),
+                on_attach = function(client)
+                    client.server_capabilities.documentFormattingProvider = false
+                    client.server_capabilities.documentRangeFormattingProvider = false
+                end,
                 settings = {
                     ["csharp|inlay_hints"] = {
                         csharp_enable_inlay_hints_for_implicit_object_creation = true,
