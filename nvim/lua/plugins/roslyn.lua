@@ -2,45 +2,17 @@ return {
     {
         "seblyng/roslyn.nvim",
         ft = { "cs", "razor" },
-        dependencies = {
-            {
-                -- By loading as a dependencies, we ensure that we are available to set
-                -- the handlers for Roslyn.
-                "tris203/rzls.nvim",
-                config = true,
-            },
-        },
-        config = function()
-            -- Use one of the methods in the Integration section to compose the command.
-            local mason_registry = require("mason-registry")
-
-            local rzls_path = vim.fn.expand("$MASON/packages/rzls/libexec")
-            local cmd = {
-                "roslyn",
-                "--stdio",
-                "--logLevel=Information",
-                "--extensionLogDirectory=" .. vim.fs.dirname(vim.lsp.get_log_path()),
-                "--razorSourceGenerator=" .. vim.fs.joinpath(rzls_path, "Microsoft.CodeAnalysis.Razor.Compiler.dll"),
-                "--razorDesignTimePath=" .. vim.fs.joinpath(rzls_path, "Targets", "Microsoft.NET.Sdk.Razor.DesignTime.targets"),
-                "--extension",
-                vim.fs.joinpath(rzls_path, "RazorExtension", "Microsoft.VisualStudioCode.RazorExtension.dll"),
-            }
-
-            vim.lsp.config("rzls", {
-                cmd = { vim.fn.expand("$MASON/bin/rzls") },
-                filetypes = { "razor" },
-                on_attach = function(client)
-                    client.server_capabilities.documentFormattingProvider = true
-                    client.server_capabilities.documentRangeFormattingProvider = true
-                end,
+        init = function()
+            vim.filetype.add({
+                extension = {
+                    razor = "razor",
+                    cshtml = "razor",
+                },
             })
-
-            vim.lsp.enable("rzls")
-
+        end,
+        config = function()
             vim.lsp.config("roslyn", {
-                cmd = cmd,
                 capabilities = require("cmp_nvim_lsp").default_capabilities(),
-                handlers = require("rzls.roslyn_handlers"),
                 on_attach = function(client)
                     client.server_capabilities.documentFormattingProvider = false
                     client.server_capabilities.documentRangeFormattingProvider = false
@@ -66,16 +38,8 @@ return {
                     },
                 },
             })
+
             vim.lsp.enable("roslyn")
-        end,
-        init = function()
-            -- We add the Razor file types before the plugin loads.
-            vim.filetype.add({
-                extension = {
-                    razor = "razor",
-                    cshtml = "razor",
-                },
-            })
         end,
     },
 }
