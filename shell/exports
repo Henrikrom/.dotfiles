@@ -1,0 +1,5 @@
+export FZF_DEFAULT_COMMAND="fd --hidden --exclude .git --exclude storage . ~"
+export PATH="$HOME/.tmux/plugins/tmuxifier/bin:$PATH"
+export DOTNET_ROOT=$HOME/.dotnet
+export PATH=$DOTNET_ROOT:$DOTNET_ROOT/tools:$DOTNET_ROOT/bin:$PATH
+

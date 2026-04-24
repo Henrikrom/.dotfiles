@@ -1,0 +1,6 @@
+alias vim=nvim
+alias vimconf="nvim ~/.config/nvim"
+alias ts="tmuxifier s"
+alias tes="tmuxifier es"
+alias gitroot='cd "$(git rev-parse --show-toplevel)"'
+alias podamn=podman
