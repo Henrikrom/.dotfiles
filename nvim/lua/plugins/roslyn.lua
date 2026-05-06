@@ -1,6 +1,8 @@
 return {
     {
         "seblyng/roslyn.nvim",
+        commit = "dcd8422b9a6fd64abc374e9d43a6be24809ee3cc",
+        cmd = "Roslyn",
         ft = { "cs", "razor" },
         init = function()
             vim.filetype.add({
@@ -10,7 +12,29 @@ return {
                 },
             })
         end,
-        config = function()
+        opts = {
+            choose_target = function(targets)
+                local cwd = vim.uv.cwd()
+
+                local cwd_target = vim.iter(targets):find(function(target)
+                    return vim.fs.dirname(target) == cwd
+                end)
+
+                if cwd_target then
+                    return cwd_target
+                end
+
+                table.sort(targets, function(a, b)
+                    return #vim.split(vim.fs.dirname(a), "/", { plain = true, trimempty = true })
+                        < #vim.split(vim.fs.dirname(b), "/", { plain = true, trimempty = true })
+                end)
+
+                return targets[1]
+            end,
+        },
+        config = function(_, opts)
+            require("roslyn").setup(opts)
+
             vim.lsp.config("roslyn", {
                 capabilities = require("cmp_nvim_lsp").default_capabilities(),
                 on_attach = function(client)
