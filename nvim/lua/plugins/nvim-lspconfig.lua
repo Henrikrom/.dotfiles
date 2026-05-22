@@ -91,8 +91,9 @@ return {
             }
 
             vim.lsp.config["html"] = {
-                root_dir = util.root_pattern(".git", "*.csproj", "*.sln") or function()
-                    return vim.loop.cwd()
+                root_dir = function(bufnr, on_dir)
+                    local root = vim.fs.root(bufnr, { "package.json", ".git", "*.csproj", "*.sln", "*.slnx" })
+                    on_dir(root or vim.uv.cwd())
                 end,
                 filetypes = { "html", "razor", "cshtml" },
                 on_attach = on_attach,
