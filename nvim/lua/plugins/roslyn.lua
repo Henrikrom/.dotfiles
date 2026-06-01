@@ -1,4 +1,34 @@
-local function roslyn_root()
+local function vscode_csharp_extension_root()
+    local extensions = vim.fn.glob(vim.fn.expand("~/.vscode/extensions/ms-dotnettools.csharp-*-linux-x64"), true, true)
+    if #extensions == 0 then
+        return nil
+    end
+
+    table.sort(extensions)
+    return extensions[#extensions]
+end
+
+local function roslyn_paths()
+    -- Prefer VS Code's bundled C#/Razor bits. They are version-matched and are
+    -- known to make Razor source-generator features work for this repo; the
+    -- global roslyn-language-server tool attached but failed Razor hover/diagnostics.
+    local vscode_root = vscode_csharp_extension_root()
+    if vscode_root then
+        local roslyn_root = vim.fs.joinpath(vscode_root, ".roslyn")
+        local razor_root = vim.fs.joinpath(vscode_root, ".razorExtension")
+        local server = vim.fs.joinpath(roslyn_root, "Microsoft.CodeAnalysis.LanguageServer")
+        local razor_extension = vim.fs.joinpath(razor_root, "Microsoft.VisualStudioCode.RazorExtension.dll")
+        local design_time = vim.fs.joinpath(razor_root, "Targets", "Microsoft.CSharpExtension.DesignTime.targets")
+
+        if vim.uv.fs_stat(server) and vim.uv.fs_stat(razor_extension) and vim.uv.fs_stat(design_time) then
+            return {
+                server = server,
+                razor_extension = razor_extension,
+                design_time = design_time,
+            }
+        end
+    end
+
     local tool_roots = vim.fn.glob(
         vim.fs.joinpath(
             vim.fn.expand("~"),
@@ -19,24 +49,33 @@ local function roslyn_root()
 
     if #tool_roots > 0 then
         table.sort(tool_roots)
-        return tool_roots[#tool_roots]
+        local tool_root = tool_roots[#tool_roots]
+        return {
+            server = vim.fs.joinpath(tool_root, "Microsoft.CodeAnalysis.LanguageServer"),
+            razor_extension = vim.fs.joinpath(tool_root, "Microsoft.VisualStudioCode.RazorExtension.dll"),
+            design_time = vim.fs.joinpath(tool_root, "Targets", "Microsoft.CSharpExtension.DesignTime.targets"),
+        }
     end
 
-    return vim.fs.joinpath(vim.fn.stdpath("data"), "mason", "packages", "roslyn", "libexec")
+    local mason_root = vim.fs.joinpath(vim.fn.stdpath("data"), "mason", "packages", "roslyn", "libexec")
+    return {
+        server = vim.fs.joinpath(mason_root, "Microsoft.CodeAnalysis.LanguageServer"),
+        razor_extension = vim.fs.joinpath(mason_root, "Microsoft.VisualStudioCode.RazorExtension.dll"),
+        design_time = vim.fs.joinpath(mason_root, "Targets", "Microsoft.CSharpExtension.DesignTime.targets"),
+    }
 end
 
 local function roslyn_cmd()
-    local roslyn_libexec = roslyn_root()
+    local paths = roslyn_paths()
 
     return {
-        vim.fs.joinpath(roslyn_libexec, "Microsoft.CodeAnalysis.LanguageServer"),
+        paths.server,
         "--logLevel=Information",
         "--extensionLogDirectory=" .. vim.fs.dirname(vim.lsp.log.get_filename()),
-        "--csharpDesignTimePath="
-            .. vim.fs.joinpath(roslyn_libexec, "Targets", "Microsoft.CSharpExtension.DesignTime.targets"),
+        "--csharpDesignTimePath=" .. paths.design_time,
         "--sourceGeneratorExecutionPreference=Automatic",
         "--stdio",
-        "--extension=" .. vim.fs.joinpath(roslyn_libexec, "Microsoft.VisualStudioCode.RazorExtension.dll"),
+        "--extension=" .. paths.razor_extension,
     }
 end
 
@@ -140,10 +179,11 @@ return {
         end,
         opts = {
             choose_target = function(targets)
+                -- Prefer the repo-level solution so Roslyn loads sibling projects
+                -- as source instead of navigating into metadata-as-source stubs.
                 local git_root = vim.fs.root(vim.api.nvim_get_current_buf(), ".git")
-
                 local root_target = vim.iter(targets):find(function(target)
-                    return vim.fs.dirname(target) == git_root
+                    return git_root and vim.fs.dirname(target) == git_root
                 end)
 
                 if root_target then

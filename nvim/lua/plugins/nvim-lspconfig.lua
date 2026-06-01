@@ -95,7 +95,7 @@ return {
                     local root = vim.fs.root(bufnr, { "package.json", ".git", "*.csproj", "*.sln", "*.slnx" })
                     on_dir(root or vim.uv.cwd())
                 end,
-                filetypes = { "html", "razor", "cshtml" },
+                filetypes = { "html" },
                 on_attach = on_attach,
                 capabilities = capabilities,
             }

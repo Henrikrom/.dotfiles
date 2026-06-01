@@ -8,7 +8,7 @@ return {
         vim.g.gruvbox_material_enable_italic = true
         vim.opt.background = "dark" -- or "light" if you prefer light mode
 
-        vim.cmd("colorscheme gruvbox-material")
+        -- vim.cmd("colorscheme gruvbox-material")
 
         vim.api.nvim_set_hl(0, "LineNr", { fg = "#bdae93" })       -- muted beige
         vim.api.nvim_set_hl(0, "CursorLineNr", { fg = "#ebdbb2", bold = true })
