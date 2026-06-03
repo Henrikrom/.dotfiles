@@ -28,6 +28,21 @@ return {
                 },
             })
 
+            -- Neovim 0.12 can crash in Treesitter's markdown conceal_lines query when
+            -- LSP hover opens a markdown floating preview with fenced code blocks. Patch
+            -- the preview helper itself because the built-in hover path bypasses the
+            -- older vim.lsp.handlers["textDocument/hover"] override.
+            if not vim.g.hbr_plaintext_lsp_markdown_floats then
+                vim.g.hbr_plaintext_lsp_markdown_floats = true
+                local original_open_floating_preview = vim.lsp.util.open_floating_preview
+                vim.lsp.util.open_floating_preview = function(contents, syntax, opts, ...)
+                    if syntax == "markdown" then
+                        syntax = "plaintext"
+                    end
+                    return original_open_floating_preview(contents, syntax, opts, ...)
+                end
+            end
+
             -- Keymaps
             vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, {})
             vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, {})

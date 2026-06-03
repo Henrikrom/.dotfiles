@@ -93,7 +93,8 @@ ls.add_snippets("cs", {
     [[
     namespace {};
 
-    public class {} {{
+    public class {} 
+    {{
 
       [Fact]
       public void Testing()
@@ -102,10 +103,16 @@ ls.add_snippets("cs", {
       }}
     }}
     ]], {
-        i(1, "namspace"), i(2, "TestClass")
+        i(1, "namspace"),
+        f(function()
+            local class_name = vim.fn.expand("%:t:r")
+            if class_name == "" then
+                return "TestClass"
+            end
+            return class_name
+        end)
     }))
 })
-
 
 
 

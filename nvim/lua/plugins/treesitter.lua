@@ -29,6 +29,7 @@ return {
             },
             indent = {
                 enable = true,
+                disable = { "javascript", "typescript", "tsx" },
             },
         })
     end,
