@@ -7,6 +7,9 @@ return {
         require('telescope').setup({
             defaults = {
                 path_display = { "truncate" },
+                preview = {
+                    treesitter = false,
+                },
                 layout_strategy = 'horizontal',
                 layout_config = {
                     horizontal = {
@@ -21,7 +24,15 @@ return {
         local builtin = require('telescope.builtin')
 
         vim.keymap.set('n', '<leader>o', function()
-            builtin.find_files({ hidden = true })
+            builtin.find_files({
+                find_command = {
+                    'fd',
+                    '--type', 'f',
+                    '--hidden',
+                    '--exclude', '.git',
+                    '--exclude', 'node_modules',
+                },
+            })
         end, {})
 
         --vim.keymap.set('n', '<leader>o', builtin.find_files, {})
