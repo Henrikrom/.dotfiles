@@ -23,6 +23,10 @@ return {
 
         local builtin = require('telescope.builtin')
 
+        vim.keymap.set('n', 'gO', builtin.lsp_document_symbols, {
+            desc = 'Document symbols',
+        })
+
         vim.keymap.set('n', '<leader>o', function()
             builtin.find_files({
                 find_command = {
