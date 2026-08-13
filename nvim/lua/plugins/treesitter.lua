@@ -25,7 +25,11 @@ return {
 
                 -- Run `:h syntax` and Tree-sitter together
                 -- Only enable this if you depend on 'syntax' for something specific
-                additional_vim_regex_highlighting = false,
+                additional_vim_regex_highlighting = {
+                    "javascript",
+                    "typescript",
+                    "tsx",
+                },
             },
             indent = {
                 enable = true,
