@@ -49,14 +49,19 @@ function dtest() {
 wt() {
   local branch="$1"
   local repo
+  local base
   local dir
-  repo="$(basename "$(git rev-parse --show-toplevel)")"
+
+  repo="$(basename "$(git rev-parse --show-toplevel)")" || return
+
+  git fetch origin || return
+
+  base="$(git symbolic-ref --short refs/remotes/origin/HEAD)" || return
   dir="/tmp/worktrees/$repo/$branch"
 
   mkdir -p "$(dirname "$dir")"
-  git worktree add "$dir" -b "$branch" && cd "$dir"
+  git worktree add "$dir" -b "$branch" "$base" && cd "$dir"
 }
-
 
 # List worktrees
 wtls() {
