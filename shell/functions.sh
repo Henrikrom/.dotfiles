@@ -45,4 +45,25 @@ function dtest() {
     dotnet test --no-restore --filter "$1"
 }
 
+# Create a worktree in ~/.worktrees/<repo>/<branch>
+wt() {
+  local branch="$1"
+  local repo
+  local dir
+  repo="$(basename "$(git rev-parse --show-toplevel)")"
+  dir="/tmp/worktrees/$repo/$branch"
 
+  mkdir -p "$(dirname "$dir")"
+  git worktree add "$dir" -b "$branch" && cd "$dir"
+}
+
+
+# List worktrees
+wtls() {
+  git worktree list
+}
+
+# Remove a worktree
+wtrm() {
+  git worktree remove "$1"
+}
