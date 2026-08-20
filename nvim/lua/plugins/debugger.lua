@@ -39,6 +39,16 @@ return {
         vim.keymap.set('n', '<F12>', dap.disconnect, {})
         vim.keymap.set('n', '<F8>', dap.run_last, {})
 
+        dap.adapters["pwa-node"] = {
+            type = "server",
+            host = "127.0.0.1",
+            port = "${port}",
+            executable = {
+                command = vim.fn.stdpath("data") .. "/mason/bin/js-debug-adapter",
+                args = { "${port}", "127.0.0.1" }
+            }
+        }
+
         dap.adapters.coreclr = {
             type = 'executable',
             command = '/usr/local/netcoredbg',
