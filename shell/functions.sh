@@ -60,7 +60,10 @@ wt() {
   dir="/tmp/worktrees/$repo/$branch"
 
   mkdir -p "$(dirname "$dir")"
-  git worktree add "$dir" -b "$branch" "$base" && cd "$dir"
+  git worktree add --no-track "$dir" -b "$branch" "$base" || return
+  git config "branch.$branch.remote" origin || return
+  git config "branch.$branch.merge" "refs/heads/$branch" || return
+  cd "$dir"
 }
 
 # List worktrees
