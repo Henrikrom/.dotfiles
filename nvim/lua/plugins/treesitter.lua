@@ -1,40 +1,38 @@
 return {
     'nvim-treesitter/nvim-treesitter',
-    build = ':TSUpdate', -- Automatically update parsers after installation
+    branch = 'main',
+    lazy = false,
+    build = ':TSUpdate',
     dependencies = {
-        'nvim-treesitter/nvim-treesitter-textobjects', -- Optional for text objects
+        { 'nvim-treesitter/nvim-treesitter-textobjects', branch = 'main' },
     },
     config = function()
-        require('nvim-treesitter.configs').setup({
-            -- List of parsers to install
-            ensure_installed = {
-                "javascript", "typescript", "python", "c",
-                "lua", "vim", "vimdoc", "query", "markdown", "markdown_inline",
-                "html", "css", "svelte"
-            },
+        local treesitter = require('nvim-treesitter')
+        treesitter.setup({ install_dir = vim.fn.stdpath('data') .. '/site' })
 
-            -- Install parsers synchronously (applies to `ensure_installed`)
-            sync_install = false,
+        local languages = {
+            'javascript', 'typescript', 'tsx', 'python', 'c',
+            'lua', 'vim', 'vimdoc', 'query', 'markdown', 'markdown_inline',
+            'html', 'css', 'svelte',
+        }
+        treesitter.install(languages)
 
-            -- Automatically install missing parsers when entering buffer
-            -- Recommendation: Set to `false` if you don't have the `tree-sitter` CLI installed locally
-            auto_install = true,
+        local available = treesitter.get_available()
+        vim.api.nvim_create_autocmd('FileType', {
+            callback = function(args)
+                local lang = vim.treesitter.language.get_lang(args.match) or args.match
+                if not vim.list_contains(available, lang) then
+                    return
+                end
 
-            highlight = {
-                enable = true, -- Enable syntax highlighting
+                if not vim.list_contains(treesitter.get_installed('parsers'), lang) then
+                    treesitter.install(lang)
+                end
 
-                -- Run `:h syntax` and Tree-sitter together
-                -- Only enable this if you depend on 'syntax' for something specific
-                additional_vim_regex_highlighting = {
-                    "javascript",
-                    "typescript",
-                    "tsx",
-                },
-            },
-            indent = {
-                enable = true,
-                disable = { "javascript", "typescript", "tsx" },
-            },
+                if pcall(vim.treesitter.start, args.buf) and args.match ~= 'javascript' and args.match ~= 'typescript' and args.match ~= 'typescriptreact' then
+                    vim.bo[args.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+                end
+            end,
         })
     end,
 }
