@@ -21,22 +21,37 @@ return {
     vim.cmd([[
       function! FilenameJestConfig(cmd) abort
         let jest_end = matchend(a:cmd, '\(^\|\s\)\(\S*/\)\?jest\ze\(\s\|$\)')
-        if jest_end < 0 || a:cmd =~# '\(^\|\s\)--config\(\s\|=\)'
+        if jest_end < 0
           return a:cmd
+        endif
+
+        " Jest expands $name, $object.property and $# in .each titles.
+        " Replace their escaped forms only inside the nearest-test filter.
+        let cmd = a:cmd
+        let filter_start = matchend(cmd, '\s-t\s\+')
+        let filter_end = filter_start < 0 ? -1 : match(cmd, '\s--\%(\s\|$\)', filter_start)
+        if filter_end >= 0
+          let filter = strpart(cmd, filter_start, filter_end - filter_start)
+          let filter = substitute(filter, '\\\$\%(\h\w*\%(\\\.\h\w*\)*\|#\)', '.*', 'g')
+          let cmd = strpart(cmd, 0, filter_start) . filter . strpart(cmd, filter_end)
+        endif
+
+        if cmd =~# '\(^\|\s\)--config\(\s\|=\)'
+          return cmd
         endif
 
         let file = get(get(g:, 'test#last_position', {}), 'file', expand('%'))
         let suffix = matchstr(fnamemodify(file, ':t:r'), '\.\zs[^.]\+$')
         if empty(suffix) || suffix ==# 'test' || suffix ==# 'spec'
-          return a:cmd
+          return cmd
         endif
 
         let config = 'jest.' . suffix . '.config.js'
         if !filereadable(config)
-          return a:cmd
+          return cmd
         endif
 
-        return strpart(a:cmd, 0, jest_end) . ' --config ' . shellescape(config) . strpart(a:cmd, jest_end)
+        return strpart(cmd, 0, jest_end) . ' --config ' . shellescape(config) . strpart(cmd, jest_end)
       endfunction
 
       let g:test#custom_transformations['filename_jest_config'] = function('FilenameJestConfig')
