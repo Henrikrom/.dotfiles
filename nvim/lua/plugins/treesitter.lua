@@ -29,7 +29,7 @@ return {
                     treesitter.install(lang)
                 end
 
-                if pcall(vim.treesitter.start, args.buf) and args.match ~= 'javascript' and args.match ~= 'typescript' and args.match ~= 'typescriptreact' then
+                if pcall(vim.treesitter.start, args.buf) and args.match ~= 'cs' and args.match ~= 'javascript' and args.match ~= 'typescript' and args.match ~= 'typescriptreact' then
                     vim.bo[args.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
                 end
             end,
