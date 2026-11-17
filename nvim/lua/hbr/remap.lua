@@ -10,12 +10,7 @@ vim.keymap.set("n", "<leader>.", "<C-i>")
 vim.keymap.set("n", "<leader>\\", ":vsplit<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<leader>v", ":split<CR>", { noremap = true, silent = true })
 
-vim.keymap.set("n", "<leader>t", function()
-    vim.cmd("split")
-    vim.cmd("wincmd j")
-    vim.cmd("terminal")
-    vim.cmd("resize " .. math.floor(vim.o.lines * 0.2))
-end, { noremap = true, silent = true})
+vim.keymap.set("n", "<leader>t", "<cmd>RenderMarkdown toggle<CR>", { noremap = true, silent = true, desc = "Toggle Markdown rendering" })
 
 vim.keymap.set("t", "<Esc><Esc>", [[<C-\><C-n>]], { noremap = true, silent = true })
 
